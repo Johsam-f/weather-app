@@ -8,6 +8,8 @@ document.querySelector("form").addEventListener('submit', (e)=>{
 async function search_weather(e){
     const input = document.querySelector("input").value.trim();
     if(!input)return;
+    const card = document.getElementById("weather-card");
+    card.innerHTML = `<p> Loading... </loading>`;
     try{
         const reponse = await fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${input}?unitGroup=metric&key=DFPLPPTJH58DQH2RZQLGGM2SN`,
             {mode: 'cors'});
@@ -15,10 +17,9 @@ async function search_weather(e){
 
         const data = await reponse.json();
             
-        const card = document.getElementById("weather-card");
         card.innerHTML = `
         <h2>${data.address}</h2>
-        <h3> details for the following days </h3>
+        <h3> For rest of the week</h3>
         <p>${data.description}</p>
         <p><strong>Timezone:</strong> ${data.timezone}</p>
         <img class="weather-icon" src="https://raw.githubusercontent.com/visualcrossing/WeatherIcons/main/PNG/4th%20Set%20-%20Color/${data.currentConditions.icon}.png" alt="${data.currentConditions.conditions}" />
@@ -66,7 +67,6 @@ async function search_weather(e){
 
 
     }catch{
-        const card = document.getElementById("weather-card");
         card.innerHTML = `<h6>failed to load details</h6>`;
     }finally{
         console.log("process finished")
